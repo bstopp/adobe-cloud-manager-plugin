@@ -7,6 +7,7 @@ on:
 
 jobs:
   validate:
+    if: github.event.check_suite.app.name == 'Jenkins' && github.event.check_suite.conclusion == 'success'
     runs-on: ubuntu-latest
     outputs:
       should_release: ${{ steps.verify-ci-status.outputs.result == 'success' && steps.interesting-categories.outputs.interesting == 'true' }}

@@ -94,9 +94,12 @@ public class RepositorySyncBuilderTest {
 
   @Before
   public void before() throws Exception {
+    srcRepo.git("init");
+    srcRepo.git("config", "--local", "commit.gpgsign", "false");
     srcRepo.init();
     srcRepo.git("checkout", "-b", defaultBranch);
     bareDestRepo.git("init", "--bare");
+    bareDestRepo.git("config", "--local", "commit.gpgsign", "false");
     bareDestRepo.git("symbolic-ref", "HEAD", "refs/heads/" + defaultBranch);
 
     CredentialsStore store = CredentialsProvider.lookupStores(rule.jenkins).iterator().next();
@@ -158,9 +161,9 @@ public class RepositorySyncBuilderTest {
     srcRepo.write("newfile", "filecontents");
     srcRepo.git("add", "newfile");
     srcRepo.git("commit", "--message=file");
-
     destRepo.git("clone", bareDestRepo.toString(), ".");
     destRepo.git("checkout", "-b", defaultBranch);
+    destRepo.git("config", "--local", "commit.gpgsign", "false");
     destRepo.git("config", "user.name", "Git SampleRepoRule");
     destRepo.git("config", "user.email", "gits@mplereporule");
     destRepo.write("testfile", "testfilecontents");
@@ -193,6 +196,7 @@ public class RepositorySyncBuilderTest {
 
     destRepo.git("clone", bareDestRepo.toString(), ".");
     destRepo.git("checkout", "-b", defaultBranch);
+    destRepo.git("config", "--local", "commit.gpgsign", "false");
     destRepo.git("config", "user.name", "Git SampleRepoRule");
     destRepo.git("config", "user.email", "gits@mplereporule");
     destRepo.write("testfile", "testfilecontents");
@@ -227,6 +231,7 @@ public class RepositorySyncBuilderTest {
     srcRepo.git("commit", "--message=file");
 
     destRepo.git("clone", bareDestRepo.toString(), ".");
+    destRepo.git("config", "--local", "commit.gpgsign", "false");
     destRepo.git("config", "user.name", "Git SampleRepoRule");
     destRepo.git("config", "user.email", "gits@mplereporule");
     destRepo.write("testfile", "testfilecontents");
@@ -256,7 +261,7 @@ public class RepositorySyncBuilderTest {
   @Test
   public void multipleScmsWarning() throws Exception {
     destRepo.init();
-
+    destRepo.git("config", "--local", "commit.gpgsign", "false");
     WorkflowJob job = rule.jenkins.createProject(WorkflowJob.class, "test");
     rule.createOnlineSlave(Label.get("runner"));
     CpsFlowDefinition flow = new CpsFlowDefinition(
