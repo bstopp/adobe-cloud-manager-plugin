@@ -260,8 +260,9 @@ public class RepositorySyncBuilderTest {
 
   @Test
   public void multipleScmsWarning() throws Exception {
-    destRepo.init();
+    destRepo.git("init");
     destRepo.git("config", "--local", "commit.gpgsign", "false");
+    destRepo.init();
     WorkflowJob job = rule.jenkins.createProject(WorkflowJob.class, "test");
     rule.createOnlineSlave(Label.get("runner"));
     CpsFlowDefinition flow = new CpsFlowDefinition(
