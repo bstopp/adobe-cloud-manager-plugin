@@ -1,5 +1,5 @@
 buildPlugin(
-    useAci: true,
+    jdkVersions: [11],
+    useContainerAgent: true,
     failFast: false,
-    configurations: buildPlugin.recommendedConfigurations()
 )

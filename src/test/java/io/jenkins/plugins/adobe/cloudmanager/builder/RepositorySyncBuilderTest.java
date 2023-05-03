@@ -352,7 +352,7 @@ public class RepositorySyncBuilderTest {
 
     String pipeline = "" +
         "pipeline {\n" +
-        "    agent { label 'master' }\n" +
+        "    agent { label 'runner' }\n" +
         "    stages {\n" +
         "        stage('sync') {\n" +
         "            steps {\n" +
